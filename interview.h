@@ -1,4 +1,5 @@
 #include "students.h"
+#include "company.h"
 
 #ifndef INTERVIEW_H
 #define INTERVIEW_H
@@ -16,13 +17,5 @@ class Interview{
     int Package;  //Package obtain if Hired
 
 };
-
-
-
-
-
-
-
-
 
 #endif
