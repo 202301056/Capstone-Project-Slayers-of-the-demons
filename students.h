@@ -1,12 +1,15 @@
 //Modules
-#include <string>
+// #include <string>
+
 
 //Making sure class is only compiled once
 #ifndef STUDENT_H
 #define STUDENT_H
 
+
 //Class defines a student and all his details
 class Student {
+
 private:
 
     //Private Student Variables
