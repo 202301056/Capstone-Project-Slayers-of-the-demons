@@ -1,14 +1,10 @@
 //Modules
-// #include <string>
-
-
-//Making sure class is only compiled once
+#include <string>
+#include <fstream>
 
 #ifndef STUDENT_H
 #define STUDENT_H
 
-
-//Class defines a student and all his details
 class Student {
 
 private:
@@ -23,6 +19,10 @@ private:
     int AlternateNumber;
     std::string SkypeID;
 
+    //Resoures for database
+    std::string ColumnPath="Database/PlacementManager/Student/";
+    
+
 public:
 
     //Constructor
@@ -32,6 +32,55 @@ public:
         : Student_ID(studentID), FullName(fullName), Email(email), Program(program),
           ContactNumber(contactNumber), WhatsappNumber(whatsappNumber),
           AlternateNumber(alternateNumber), SkypeID(skypeID) {
+
+            std::ofstream studentid;
+            studentid.open(ColumnPath+"Student_ID.txt", std::ios::app);
+            if (studentid.is_open()){
+                studentid << Student_ID << std::endl;
+                studentid.close();
+            }
+            std::ofstream fullname;
+            fullname.open(ColumnPath+"FullName.txt", std::ios::app);
+            if (fullname.is_open()){
+                fullname << FullName << std::endl;
+                fullname.close();
+            }
+            std::ofstream studentemail;
+            studentemail.open(ColumnPath+"Email.txt", std::ios::app);
+            if (studentemail.is_open()){
+                studentemail << Email << std::endl;
+                studentemail.close();
+            }
+            std::ofstream studentprogram;
+            studentprogram.open(ColumnPath+"Program.txt", std::ios::app);
+            if (studentprogram.is_open()){
+                studentprogram << Program << std::endl;
+                studentprogram.close();
+            }
+            std::ofstream contactnumber;
+            contactnumber.open(ColumnPath+"ContactNumber.txt", std::ios::app);
+            if (contactnumber.is_open()){
+                contactnumber << ContactNumber << std::endl;
+                contactnumber.close();
+            }
+            std::ofstream whatsappnumber;
+            whatsappnumber.open(ColumnPath+"WhatsappNumber.txt", std::ios::app);
+            if (whatsappnumber.is_open()){
+                whatsappnumber << WhatsappNumber << std::endl;
+                whatsappnumber.close();
+            }
+            std::ofstream alternatenumber;
+            alternatenumber.open(ColumnPath+"AlternateNumber.txt", std::ios::app);
+            if (alternatenumber.is_open()){
+                alternatenumber << AlternateNumber << std::endl;
+                alternatenumber.close();
+            }
+            std::ofstream skypeid;
+            skypeid.open(ColumnPath+"SkypeID.txt", std::ios::app);
+            if (skypeid.is_open()){
+                skypeid << SkypeID << std::endl;
+                skypeid.close();
+            }
     }
 
     //Public Student Methods
@@ -45,6 +94,12 @@ public:
         std::cout << "Alternate Number: " << AlternateNumber << std::endl;
         std::cout << "Skype ID: " << SkypeID << std::endl;
     }
+
+    int getStudentID(){
+        return Student_ID;
+    }
+
+    
 
 };
 

@@ -3,12 +3,16 @@
 #include <iostream>
 #include <string>
 #include "students.h"
-// #include "company.h"
-// #include "interview.h"
+// #include "sqlite3.h"
+#include "company.h"
+#include "interview.h"
 
 int main(){
-    Student obj(1,"baba","baa@hal.cm","3",4,5,6,"8");
-    obj.displayStudent();   
+    std::string var = "fart";
+    Student raj(202301056, "gd", "dgd", "edgewrq", 353, 3523, 4622, "hknrik");
+    Company google("Google", "google@fart.com", 94094098);
+    Interview first(google, raj, "10/12/2005", "20:40", "BabaKaThela");
+    std::cout<<var<<"?gad";
 
     return 0;
 }
