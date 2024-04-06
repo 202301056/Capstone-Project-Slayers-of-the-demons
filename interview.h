@@ -12,14 +12,14 @@ class Interview{
     std::string DateOfInterview;   //(dd/mm/yyyy)
     std::string TimeOfInterview;   //(hh:mm)
     std::string Venue;
-    bool Status;  //Complete-Incomplete
-    bool Hired;   //Yes-No
-    int Package;  //Package obtain if Hired
+    std::string Status;  //Complete-Incomplete
+    std::string Hired;   //Yes-No
+    std::string Package;  //Package obtain if Hired
 
     std::string ColumnPath = "Database/PlacementManager/Interview/";
 
     public:
-    Interview(const Company& interviewingcompany, const Student& interviewee, const std::string& date, const std::string& time, const std::string& venue, bool status = 0, bool hired =0, int package=0)
+    Interview(const Company& interviewingcompany, const Student& interviewee, const std::string& date, const std::string& time, const std::string& venue, const std::string& status = "0", const std::string& hired = "0", const std::string& package="0")
         :InterviewingCompany(interviewingcompany), Interviewee(interviewee), DateOfInterview(date), TimeOfInterview(time), Venue(venue), Status(status), Hired(hired), Package(package) 
         {
 

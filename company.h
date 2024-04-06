@@ -10,30 +10,27 @@ class Company {
 
     std::string CompanyName;
     std::string CompanyEmail;
-    int CompanyContactNumber;
+    std::string CompanyContactNumber;
 
     std::string ColumnPath = "Database/PlacementManager/Company/";
 
     public:
 
     //constructor
-    Company(const std::string& companyname, const std::string companyemail, int companycontactnumber)
+    Company(const std::string& companyname, const std::string& companyemail, const std::string& companycontactnumber)
         :CompanyName(companyname), CompanyEmail(companyemail), CompanyContactNumber(companycontactnumber) {
             
-            std::ofstream constructorcompanyname;
-            constructorcompanyname.open(ColumnPath+"CompanyName.txt", std::ios::app);
+            std::ofstream constructorcompanyname(ColumnPath+"CompanyName.txt", std::ios::app);
             if (constructorcompanyname.is_open()){
                 constructorcompanyname << CompanyName << std::endl;
                 constructorcompanyname.close();
             }
-            std::ofstream constructorcompanyemail;
-            constructorcompanyemail.open(ColumnPath+"CompanyEmail.txt", std::ios::app);
+            std::ofstream constructorcompanyemail(ColumnPath+"CompanyEmail.txt", std::ios::app);
             if (constructorcompanyemail.is_open()){
                 constructorcompanyemail << CompanyEmail << std::endl;
                 constructorcompanyemail.close();
             }
-            std::ofstream constructorcompanycontactnumber;
-            constructorcompanycontactnumber.open(ColumnPath+"CompanyContactNumber.txt", std::ios::app);
+            std::ofstream constructorcompanycontactnumber(ColumnPath+"CompanyContactNumber.txt", std::ios::app);
             if (constructorcompanycontactnumber.is_open()){
                 constructorcompanycontactnumber << CompanyContactNumber << std::endl;
                 constructorcompanycontactnumber.close();
