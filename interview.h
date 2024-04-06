@@ -1,14 +1,21 @@
+#include "functions.hpp"
 #include "students.h"
 #include "company.h"
+
 
 #ifndef INTERVIEW_H
 #define INTERVIEW_H
 
+
+std::string stripWhitespace(const std::string& inputString);
+std::string toLowercase(const std::string& inputString);
+std::string fD(const std::string& inputString);
+
 class Interview{
     
     private:
-    Company InterviewingCompany;
-    Student Interviewee;
+    std::string InterviewingCompany;
+    std::string Interviewee;
     std::string DateOfInterview;   //(dd/mm/yyyy)
     std::string TimeOfInterview;   //(hh:mm)
     std::string Venue;
@@ -19,21 +26,21 @@ class Interview{
     std::string ColumnPath = "Database/PlacementManager/Interview/";
 
     public:
-    Interview(const Company& interviewingcompany, const Student& interviewee, const std::string& date, const std::string& time, const std::string& venue, const std::string& status = "0", const std::string& hired = "0", const std::string& package="0")
-        :InterviewingCompany(interviewingcompany), Interviewee(interviewee), DateOfInterview(date), TimeOfInterview(time), Venue(venue), Status(status), Hired(hired), Package(package) 
+    Interview(const std::string& interviewingcompany, const std::string& interviewee, const std::string& date, const std::string& time, const std::string& venue, const std::string& status = "i", const std::string& hired = "n", const std::string& package="0")
+        :InterviewingCompany(fD(interviewingcompany)), Interviewee(fD(interviewee)), DateOfInterview(fD(date)), TimeOfInterview(fD(time)), Venue(fD(venue)), Status(fD(status)), Hired(fD(hired)), Package(fD(package)) 
         {
 
             std::ofstream nameofinterviewingcompany;
             nameofinterviewingcompany.open(ColumnPath+"InterviewingCompany.txt", std::ios::app);
             if (nameofinterviewingcompany.is_open()){
-                nameofinterviewingcompany << InterviewingCompany.getCompanyName() << std::endl;
+                nameofinterviewingcompany << InterviewingCompany << std::endl;
                 nameofinterviewingcompany.close();
             }
 
             std::ofstream nameofinterviewee;
             nameofinterviewee.open(ColumnPath+"Interviewee.txt", std::ios::app);
             if (nameofinterviewee.is_open()){
-                nameofinterviewee << Interviewee.getStudentID() << std::endl;
+                nameofinterviewee << Interviewee << std::endl;
                 nameofinterviewee.close();
             }
 

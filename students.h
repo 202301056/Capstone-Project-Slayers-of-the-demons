@@ -1,9 +1,17 @@
+#ifndef STUDENT_H
+#define STUDENT_H
+
+
 //Modules
+#include "functions.hpp"
 #include <string>
 #include <fstream>
 
-#ifndef STUDENT_H
-#define STUDENT_H
+
+
+std::string stripWhitespace(const std::string& inputString);
+std::string toLowercase(const std::string& inputString);
+std::string fD(const std::string& inputString);
 
 class Student {
 
@@ -29,9 +37,9 @@ public:
         Student(const std::string& studentID, const std::string& fullName, const std::string& email,
             const std::string& program, const std::string& contactNumber, const std::string& whatsappNumber,
             const std::string& alternateNumber, const std::string& skypeID)
-        : Student_ID(studentID), FullName(fullName), Email(email), Program(program),
-          ContactNumber(contactNumber), WhatsappNumber(whatsappNumber),
-          AlternateNumber(alternateNumber), SkypeID(skypeID) {
+        : Student_ID(fD(studentID)), FullName(fD(fullName)), Email(fD(email)), Program(fD(program)),
+          ContactNumber(fD(contactNumber)), WhatsappNumber(fD(whatsappNumber)),
+          AlternateNumber(fD(alternateNumber)), SkypeID(fD(skypeID)) {
 
             std::ofstream studentid(ColumnPath+"Student_ID.txt", std::ios::app);
             if (studentid.is_open()){
@@ -84,9 +92,9 @@ public:
 
     //Public Student Methods
 
-    std::string getStudentID(){
-        return Student_ID;
-    }
+    // std::string getStudentID() const{
+    //     return Student_ID;
+    // }
 
     
 

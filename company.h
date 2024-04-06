@@ -1,11 +1,17 @@
+#include "functions.hpp"
 #include <fstream>
 #include <string>
+
 
 #ifndef COMPANY_H
 #define COMPANY_H
 
+
+
+
 class Company {
     
+
     private:
 
     std::string CompanyName;
@@ -18,11 +24,11 @@ class Company {
 
     //constructor
     Company(const std::string& companyname, const std::string& companyemail, const std::string& companycontactnumber)
-        :CompanyName(companyname), CompanyEmail(companyemail), CompanyContactNumber(companycontactnumber) {
+        :CompanyName(fD(companyname)), CompanyEmail(fD(companyemail)), CompanyContactNumber(fD(companycontactnumber)) {
             
             std::ofstream constructorcompanyname(ColumnPath+"CompanyName.txt", std::ios::app);
             if (constructorcompanyname.is_open()){
-                constructorcompanyname << CompanyName << std::endl;
+                constructorcompanyname << fD(CompanyName) << std::endl;
                 constructorcompanyname.close();
             }
             std::ofstream constructorcompanyemail(ColumnPath+"CompanyEmail.txt", std::ios::app);
@@ -38,9 +44,9 @@ class Company {
 
     }
 
-    std::string getCompanyName(){
-        return CompanyName;
-    }
+    // std::string getCompanyName() const {
+    //     return CompanyName;
+    // }
 };
 
 #endif
