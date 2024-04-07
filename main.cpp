@@ -13,6 +13,244 @@
 #define STR_BOOL_FALSE "0"
 
 
+// Function prototypes
+void addNewStudent();
+void deleteStudent(const std::string& studentID);
+void addNewCompany();
+void deleteCompany(const std::string& companyName);
+void scheduleAnInterview();
+void cancelAnInterview(const std::string& companyName, const std::string& intervieweeID);
+// void changeInterviewStatus(const std::string& companyName, const std::string& intervieweeID);
+void resultAnInterview(const std::string& companyName, const std::string& intervieweeID);
+void studentAcceptedOffer(const std::string& companyName, const std::string& intervieweeID);
+int studentMenu();
+int companyMenu();
+int interviewMenu();
+int mainMenu();
+
+
+//Main Function
+int main(){
+    mainMenu();      
+    return 0;
+}
+
+
+//Interview Functions
+void scheduleAnInterview() {
+
+    std::string companyName, intervieweeID, interviewDate, interviewTime, venue, status, packageoffered, offeraccepted;
+    std::cout << "Enter Interviewing Company Name: ";
+    std::getline(std::cin, companyName);
+    std::cout << "Enter Interviewee Student ID: ";
+    std::getline(std::cin, intervieweeID);
+    std::cout << "Enter Interview Date (Format: dd/mm/yyyy): ";
+    std::getline(std::cin, interviewDate);
+    std::cout << "Enter Interview Time (Format: hh:mm): ";
+    std::getline(std::cin, interviewTime);
+    std::cout << "Enter Interview Venue: ";
+    std::getline(std::cin, venue);
+    Interview(companyName, intervieweeID, interviewDate, interviewTime, venue);
+    std::cout << "Interview Scheduled Successfully!" << std::endl;
+
+}
+
+int getTheIndexOfInterview(const std::string companyName,const std::string intervieweeID){
+    std::vector<int> indicesOfCompanyName = getIndicesVectorFromSearchWord("Database/PlacementManager/Interview/InterviewingCompany.txt", companyName);
+    std::vector<int> indicesOfIntervieweeID = getIndicesVectorFromSearchWord("Database/PlacementManager/Interview/Interviewee.txt", intervieweeID);
+    for(int i=0; i<indicesOfCompanyName.size(); i++){
+        for(int j=0; j<indicesOfIntervieweeID.size(); j++){
+            if(indicesOfCompanyName[i] == indicesOfIntervieweeID[j]){
+                return indicesOfCompanyName[i];
+            }
+        }
+    }
+    return -1;
+}
+
+void changeInterviewStatus(const std::string companyName, const std::string intervieweeID){
+    int index = getTheIndexOfInterview(companyName, intervieweeID);
+    std::string status;
+    std::cout << "Enter new status (C for completed/I for incomplete): ";
+    std::getline(std::cin, status);
+    changeDataAtIndex("Database/PlacementManager/Interview/Status.txt", index, fD(status));
+    std::cout << "Status changed successfully!" << std::endl;
+}
+
+void cancelAnInterview(const std::string& companyName, const std::string& intervieweeID) {
+    int index = getTheIndexOfInterview(companyName, intervieweeID);
+
+    if (index == -1) {
+        std::cout << "No such interview found!" << std::endl;
+    } else {
+        changeDataAtIndex("Database/PlacementManager/Interview/InterviewingCompany.txt", index, "");
+        changeDataAtIndex("Database/PlacementManager/Interview/Interviewee.txt", index, "");
+        changeDataAtIndex("Database/PlacementManager/Interview/DateOfInterview.txt", index, "");
+        changeDataAtIndex("Database/PlacementManager/Interview/TimeOfInterview.txt", index, "");
+        changeDataAtIndex("Database/PlacementManager/Interview/Venue.txt", index, "");
+        changeDataAtIndex("Database/PlacementManager/Interview/Status.txt", index, "");
+        changeDataAtIndex("Database/PlacementManager/Interview/PackageOffered.txt", index, "");
+        changeDataAtIndex("Database/PlacementManager/Interview/OfferAccepted.txt", index, "");
+    }
+}
+
+void resultAnInterview(const std::string& companyName, const std::string& intervieweeID) {
+    int index = getTheIndexOfInterview(companyName, intervieweeID);
+    std::string hired, package;
+    std::cout << "Is the candidate hired? (Y/N): ";
+    std::getline(std::cin, hired);
+    if (fD(hired) == "y") {
+        std::cout << "Offer Package Amount (Format:XXXXXXXX): ";
+        std::getline(std::cin, package);
+        changeDataAtIndex("DataBase/PlacementManager/Interview/PackageOffered.txt", index, fD(package));
+    } else {
+        changeDataAtIndex("DataBase/PlacementManager/Interview/PackageOffered.txt", index, "notHired");
+        changeDataAtIndex("DataBase/PlacementManager/Interview/OfferAccepted.txt", index, "notHired");
+    }
+    std::cout << "Interview Resulted Successfully!" << std::endl;
+}
+
+void studentAcceptedOffer(const std::string& companyName, const std::string& intervieweeID) {
+    int index = getTheIndexOfInterview(companyName, intervieweeID);
+    changeDataAtIndex("Database/PlacementManager/Interview/OfferAccepted.txt", index, "y");
+    std::cout << "Offer Marked Accepted Successfully!" << std::endl;
+}
+
+
+int mainMenu() {
+    int mainMenuChoice;
+    do {
+        std::cout << "Welcome to DA-IICT Placement Management System!\n" << std::endl;
+        std::cout << "---MAIN MENU---\n1. Student\n2. Company\n3. Interview\n4. Exit\nEnter number to select option: ";
+        std::cin >> mainMenuChoice;
+
+        switch(mainMenuChoice){
+            case 1:
+                studentMenu();
+                break;
+            case 2:
+                companyMenu();
+                break;
+            case 3:
+                interviewMenu();
+                break;
+            case 4:
+                return 0;
+            default:
+                std::cout << "Invalid option! Please enter a number between 1-4." << std::endl;
+        }
+    } while(mainMenuChoice != 4);
+    return 0;
+}
+
+int studentMenu() {
+    int studentChoice;
+    do {
+        std::cout << "---STUDENT MENU---\n1. Add Student\n2. Delete Student\n3. Back to Main Menu\nEnter number to select option: ";
+        std::cin >> studentChoice;
+        
+        switch(studentChoice){
+            case 1:
+                addNewStudent();
+                break;
+            case 2: {
+                std::string studentID;
+                std::cout << "Enter Student ID to Delete: ";
+                std::cin >> studentID;
+                deleteStudent(studentID);
+                break;
+            }
+            case 3:
+                break;
+            default:
+                std::cout << "Invalid option! Please enter a number between 1-3." << std::endl;
+        }
+    } while(studentChoice != 3);
+    return 0;
+}
+
+int companyMenu() {
+    int companyChoice;
+    do {
+        std::cout << "---COMPANY MENU---\n1. Add Company\n2. Delete Company\n3. Back to Main Menu\nEnter number to select option: ";
+        std::cin >> companyChoice;
+        
+        switch(companyChoice){
+            case 1:
+                addNewCompany();
+                break;
+            case 2: {
+                std::string companyName;
+                std::cout << "Enter Company Name to Delete: ";
+                std::cin >> companyName;
+                deleteCompany(companyName);
+                break;
+            }
+            case 3:
+                break;
+            default:
+                std::cout << "Invalid option! Please enter a number between 1-3." << std::endl;
+        }
+    } while(companyChoice != 3); 
+    return 0;
+}
+
+int interviewMenu() {
+    int interviewChoice;
+    do {
+        std::cout << "---INTERVIEW MENU---\n1. Schedule Interview\n2. Cancel Interview\n3. Change Interview Status\n4. Result Interview\n5. Mark Offer Accepted\n6. Back to Main Menu\nEnter number to select option: ";
+        std::cin >> interviewChoice;
+        
+        switch(interviewChoice){
+            case 1:
+                scheduleAnInterview();
+                break;
+            case 2: {
+                std::string companyName, intervieweeID;
+                std::cout << "Enter Company Name: ";
+                std::cin >> companyName;
+                std::cout << "Enter Interviewee ID: ";
+                std::cin >> intervieweeID;
+                cancelAnInterview(companyName, intervieweeID);
+                break;
+            }
+            case 3: {
+                std::string companyName, intervieweeID;
+                std::cout << "Enter Company Name: ";
+                std::cin >> companyName;
+                std::cout << "Enter Interviewee ID: ";
+                std::cin >> intervieweeID;
+                changeInterviewStatus(companyName, intervieweeID);
+                break;
+            }
+            case 4: {
+                std::string companyName, intervieweeID;
+                std::cout << "Enter Company Name: ";
+                std::cin >> companyName;
+                std::cout << "Enter Interviewee ID: ";
+                std::cin >> intervieweeID;
+                resultAnInterview(companyName, intervieweeID);
+                break;
+            }
+            case 5: {
+                std::string companyName, intervieweeID;
+                std::cout << "Enter Company Name: ";
+                std::cin >> companyName;
+                std::cout << "Enter Interviewee ID: ";
+                std::cin >> intervieweeID;
+                studentAcceptedOffer(companyName, intervieweeID);
+                break;
+            }
+            case 6:
+                break;
+            default:
+                std::cout << "Invalid option! Please enter a number between 1-6." << std::endl;
+        }
+    } while(interviewChoice != 6);
+    return 0;
+}
+
+
 //Functions
 
 //Gets index of the word in the file
@@ -103,7 +341,6 @@ void changeDataAtIndex(const std::string& filename, int index, const std::string
 
 }
 
-
 //Company functions
 void addNewCompany() {
     std::string companyName, companyEmail, companyContact;
@@ -167,143 +404,4 @@ void deleteStudent(const std::string& studentID){
     std::cout << "Student deleted successfully!" << std::endl;
 
 
-}
-
-
-//Interview Functions
-void scheduleAnInterview() {
-
-    std::string companyName, intervieweeID, interviewDate, interviewTime, venue, status, packageoffered, offeraccepted;
-    std::cout << "Enter Interviewing Company Name: ";
-    std::getline(std::cin, companyName);
-    std::cout << "Enter Interviewee Student ID: ";
-    std::getline(std::cin, intervieweeID);
-    std::cout << "Enter Interview Date (Format: dd/mm/yyyy): ";
-    std::getline(std::cin, interviewDate);
-    std::cout << "Enter Interview Time (Format: hh:mm): ";
-    std::getline(std::cin, interviewTime);
-    std::cout << "Enter Interview Venue: ";
-    std::getline(std::cin, venue);
-    Interview(companyName, intervieweeID, interviewDate, interviewTime, venue);
-    std::cout << "Interview Scheduled Successfully!" << std::endl;
-
-}
-
-int getTheIndexOfInterview(std::string companyName, std::string intervieweeID){
-    std::vector<int> indicesOfCompanyName = getIndicesVectorFromSearchWord("Database/PlacementManager/Interview/InterviewingCompany.txt", companyName);
-    std::vector<int> indicesOfIntervieweeID = getIndicesVectorFromSearchWord("Database/PlacementManager/Interview/Interviewee.txt", intervieweeID);
-    for(int i=0; i<indicesOfCompanyName.size(); i++){
-        for(int j=0; j<indicesOfIntervieweeID.size(); j++){
-            if(indicesOfCompanyName[i] == indicesOfIntervieweeID[j]){
-                return indicesOfCompanyName[i];
-            }
-        }
-    }
-    return -1;
-}
-
-void cancelAnInterview(std::string companyName, std::string intervieweeID) {
-    int index = getTheIndexOfInterview(companyName, intervieweeID);
-
-    if(index == -1){
-        std::cout << "No such interview found!" << std::endl;
-    }
-    else{
-        changeDataAtIndex("Database/PlacementManager/Interview/InterviewingCompany.txt", index, "");
-        changeDataAtIndex("Database/PlacementManager/Interview/Interviewee.txt", index, "");
-        changeDataAtIndex("Database/PlacementManager/Interview/DateOfInterview.txt", index, "");
-        changeDataAtIndex("Database/PlacementManager/Interview/TimeOfInterview.txt", index, "");
-        changeDataAtIndex("Database/PlacementManager/Interview/Venue.txt", index, "");
-        changeDataAtIndex("Database/PlacementManager/Interview/Status.txt", index, "");
-        changeDataAtIndex("Database/PlacementManager/Interview/PackageOffered.txt", index, "");
-        changeDataAtIndex("Database/PlacementManager/Interview/OfferAccepted.txt", index, "");
-    }
-
-}
-
-void changeInterviewstatus(std::string companyName, std::string intervieweeID){
-    int index = getTheIndexOfInterview(companyName, intervieweeID);
-    std::string status;
-    std::cout << "Enter new status (C for completed/I for incomplete): ";
-    std::getline(std::cin, status);
-    changeDataAtIndex("Database/PlacementManager/Interview/Status.txt", index, fD(status));
-    std::cout << "Status changed successfully!" << std::endl;
-}
-
-void resultAnInterview(std::string companyName, std::string intervieweeID) {
-    int index = getTheIndexOfInterview(companyName, intervieweeID);
-    std::string hired, package;
-    std::cout << "Is the candidate hired? (Y/N): ";
-    std::getline(std::cin, hired);
-    if(fD(hired) == "y"){
-        std::cout << "Offer Package Amount (Format:XXXXXXXX): ";
-        std::getline(std::cin, package);
-        changeDataAtIndex("DataBase/PlacementManager/Interview/PackageOffered.txt", index, fD(package));
-    }
-    else{
-        changeDataAtIndex("DataBase/PlacementManager/Interview/PackageOffered.txt", index, "notHired");
-        changeDataAtIndex("DataBase/PlacementManager/Interview/OfferAccepted.txt", index, "notHired");
-    }
-    std::cout << "Interview Resulted Successfully!" << std::endl;    
-}
-
-void studentAcceptedOffer(std::string companyName, std::string intervieweeID){
-    int index = getTheIndexOfInterview(companyName, intervieweeID);
-    changeDataAtIndex("Database/PlacementManager/Interview/OfferAccepted.txt", index, "y");
-    std::cout << "Offer Marked Accepted Successfully!" << std::endl;
-}
-
-//Main Function
-int main(){
-    
-
-    
-
-
-
-
-    // Open the file "my_file.txt" (replace with your file name)
-
-    // std::string filePath1 = "Database/PlacementManager/Company/CompanyName.txt";
-    // std::string filePath2 = "Name.txt";
-
-    // changeDataAtIndex(filePath1, getIndexFromData(filePath1, "orange"), "  amazon  ");
-    // changeDataAtIndex(filePath1, 2, "  Apple ");
-    // std::string filePath2 = "Database/PlacementManager/Company/CompanyEmail.txt";
-    // std::string searchWord1 = "miCrosoft ";
-    // std::string searchWord2 = "google";
-    // int index = getIndexFromData(filePath1, (searchWord1));
-    // std::cout << index << std::endl;
-    // std::string word = getDataFromIndex(filePath2, index);
-    // std::cout << word << std::endl;
-    // std::vector<int> indices = getIndicesVectorFromSearchWord(filePath1, searchWord2);
-    // for (int i = 0; i < indices.size(); i++) {
-    //     std::cout << indices[i] << " " << std::endl;
-    // }
-    // std::ifstream file("Database/PlacementManager/Company/CompanyName.txt");
-    // std::string line;
-
-    // if (file.is_open()) {
-    //     int i = 0;
-    //     // Read each line from the file
-    //     while (getline(file, line)) {
-    //         i++;
-    //         if (line == "adobe"){
-    //         std::cout << i << " " << line << std::endl;
-    //         }
-    //     }
-
-    //     // Close the file
-    //     file.close();
-    // } else {
-    //     // Display an error message if the file cannot be opened
-    //     std::cerr << "Unable to open file!" << std::endl;
-    // }
-
-
-
- 
-   
-
-    return 0;
 }
