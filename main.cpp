@@ -550,7 +550,7 @@ std::vectors<int> filterPastInterviews() {
   //In this college your graduation year is in your student ID!!!! 202301001 is a student graduating in 2023.
   std::cout << "Enter Batch Year (leave blank to include all): ";
   std::getline(std::cin, year);
-  std::cout << "Enter Program (leave blank to include all): ";
+  std::cout << "Enter Program Number(01 for BTech ICT, 02 for BTech MnC, 03 for MTech Data Science) (leave blank to include all): ";
   std::getline(std::cin, program);
   if(companyName != ""){
     // Filter by company
