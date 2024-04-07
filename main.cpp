@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vector> 
 #include <unordered_set>
+#include <cmath>
 #include "functions.hpp"
 #include "students.h"
 #include "company.h"
@@ -29,6 +30,9 @@ int studentMenu();
 int companyMenu();
 int interviewMenu();
 int mainMenu();
+int analysePastDataMenu();
+std::vector<int> filterPastInterviews();
+void operationsOnFilteredInterviews(std::vector<int> filteredInterviews);
 
 //Functions
 
@@ -242,45 +246,74 @@ std::vector<int> findCommonElements(const std::vector<std::vector<int>>& vectors
     return result;
 }
 
-double calculateMedianPackage(std::vector<int>& lol) {
+
+int calculateMedianPackage(const std::vector<int>& indices) {
     std::vector<int> nums;
-    for (int bal : lol) {
+    for (int index : indices) {
         std::string line;
-        line = getDataFromIndex("Database/PlacementManager/Interview/PackageOffered.txt",bal);
+        line = getDataFromIndex("Database/PlacementManager/Interview/PackageOffered.txt", index);
         if (line != "nothired"){
             nums.push_back(std::stoi(line));
-        }
-        else {
+        } else {
             nums.push_back(0);
         }
+       
     }
+
     std::sort(nums.begin(), nums.end());
     int n = nums.size();
     if (n % 2 == 0) {
-        return (nums[n/2 - 1] + nums[n/2]) / 2.0;
+        return static_cast<int>((nums[n/2 - 1] + nums[n/2]) / 2.0);
     } else {
         return nums[n/2];
     }
 }
 
-double calculateMeanPackage(const std::vector<int>& lol) {
-     std::vector<int> nums;
-    for (int bal : lol) {
+int calculateMeanPackage(const std::vector<int>& indices) {
+    std::vector<int> nums;
+    for (int index : indices) {
         std::string line;
-        line = getDataFromIndex("Database/PlacementManager/Interview/PackageOffered.txt", bal);
+        line = getDataFromIndex("Database/PlacementManager/Interview/PackageOffered.txt", index);
         if (line != "nothired"){
             nums.push_back(std::stoi(line));
-        }
-        else {
+        } else {
             nums.push_back(0);
         }
+        
     }
 
     int sum = 0;
     for (int num : nums) {
         sum += num;
     }
-    return static_cast<double>(sum) / nums.size();
+    return static_cast<int>(std::round(static_cast<double>(sum) / nums.size()));
+}
+
+void printInterviewDetails(const std::vector<int>& filteredInterviews){
+    // std::vector<int> nums;
+    for (int index : filteredInterviews) {
+
+        std::string line1 = getDataFromIndex("Database/PlacementManager/Interview/InterviewingCompany.txt", index);
+        std::string line2 = getDataFromIndex("Database/PlacementManager/Interview/Interviewee.txt", index);
+        std::string line3 = getDataFromIndex("Database/PlacementManager/Interview/DateOfInterview.txt", index);
+        std::string line4 = getDataFromIndex("Database/PlacementManager/Interview/TimeOfInterview.txt", index);
+        std::string line5 = getDataFromIndex("Database/PlacementManager/Interview/Venue.txt", index);
+        std::string line6 = getDataFromIndex("Database/PlacementManager/Interview/Status.txt", index);
+        std::string line7 = getDataFromIndex("Database/PlacementManager/Interview/PackageOffered.txt", index);
+        std::string line8 = getDataFromIndex("Database/PlacementManager/Interview/OfferAccepted.txt", index);
+        std::cout << "Interviewing Company: " << line1 << std::endl;
+        std::cout << "Interviewee: " << line2 << std::endl;
+        std::cout << "Date Of Interview: " << line3 << std::endl;
+        std::cout << "Time Of Interview: " << line4 << std::endl;
+        std::cout << "Venue: " << line5 << std::endl;
+        std::cout << "Status: " << line6 << std::endl;
+        std::cout << "Package Offered: " << line7 << std::endl;
+        std::cout << "Offered Accepted: " << line8 << std::endl;
+        
+    }
+    
+        
+
 }
 
 
@@ -290,12 +323,7 @@ double calculateMeanPackage(const std::vector<int>& lol) {
 
 //Main Function
 int main(){
-    // mainMenu();      
-    std::vector<int> bol = getIndicesVectorOfAyearFromStudentIDs("2019");
-    for (int i=0; i<bol.size(); i++){
-        std::cout << bol[i] << std::endl;
-    }
-    return 0;
+    mainMenu();      
 }
 
 
@@ -524,9 +552,11 @@ int analysePastDataMenu(){
       std::cin >> analyseChoice;
       switch(analyseChoice){
           case 1:
+          {
               std::vector<int> filteredInterviews = filterPastInterviews();
               operationsOnFilteredInterviews(filteredInterviews);
               break;
+          }
           case 2:
               break;
           default:
@@ -534,16 +564,17 @@ int analysePastDataMenu(){
       }
 
 
-    } while(studentChoice != 2);
+    } while(analyseChoice != 2);
     return 0;
 }
 
-std::vectors<int> filterPastInterviews() {
+std::vector<int> filterPastInterviews() {
     // Declare variables
   std::string companyName, year, program;
   std::vector<std::vector<int>> filteredInterviews;
 
   // Prompt user for filters
+  std::cin.ignore();
   std::cout << "Enter Company Name (leave blank to include all): ";
   std::getline(std::cin, companyName);
   /*--------ATTENTION--------*/
@@ -559,12 +590,12 @@ std::vectors<int> filterPastInterviews() {
   }
   if(year != ""){
     // Filter by year
-    std::vector<int> filteredByYear = getIndicesVectorOfAyearFromStudentIDs("Database/PlacementManager/Interview/Interviewee.txt", year);
+    std::vector<int> filteredByYear = getIndicesVectorOfAyearFromStudentIDs(year);
     filteredInterviews.push_back(filteredByYear);
   }
   if(program != ""){
     // Filter by program
-    std::vector<int> filteredByProgram = getIndicesVectorOfProgramFromStudentIDs("Database/PlacementManager/Interview/Interviewee.txt", program);
+    std::vector<int> filteredByProgram = getIndicesVectorOfProgramFromStudentIDs(program);
     filteredInterviews.push_back(filteredByProgram);
   }
 
@@ -573,7 +604,7 @@ std::vectors<int> filterPastInterviews() {
 
 }
 
-int operationsOnFilteredInterviews(std::vector<int> filteredInterviews){
+void operationsOnFilteredInterviews(std::vector<int> filteredInterviews){
     // Menu to select operation
     int operationChoice;
     do{
@@ -583,7 +614,7 @@ int operationsOnFilteredInterviews(std::vector<int> filteredInterviews){
         case 1:
             printInterviewDetails(filteredInterviews);
             break;
-        case 2:
+        case 2:     
             std::cout << "Median package of filtered interviews is: " << calculateMedianPackage(filteredInterviews) << std::endl;
             break;
         case 3:
@@ -594,6 +625,7 @@ int operationsOnFilteredInterviews(std::vector<int> filteredInterviews){
         default:
             std::cout << "Invalid option! Please enter a number between 1-4." << std::endl;
     
-    } while (studentChoice != 4);
-    }    
+    } 
+    }while (operationChoice != 4);
+       
 }
