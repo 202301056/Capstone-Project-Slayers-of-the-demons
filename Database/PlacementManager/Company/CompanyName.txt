@@ -4,7 +4,6 @@ amazon
 microsoft
 facebook
 tesla
-alibaba
 samsung
 walmart
 intel
@@ -15,11 +14,7 @@ ibm
 sony
 nvidia
 adobe
-cisco
-baidu
 paypal
-hp
-linkedin
 twitter
 uber
 snapchat
@@ -28,66 +23,8 @@ dropbox
 salesforce
 pinterest
 spotify
-alphabet
 square
 airbnb
-palantir technologies
-lyft
-doordash
 stripe
-zoom video communications
-wework
-tesla
-dropbox
-zynga
-tiktok
 flipkart
-infosys
-accenture
-volkswagen
-bmw
-ford
-general motors
-toyota
-nestle
-coca-cola
-pepsico
-mcdonald's
-starbucks
-kfc
-burger king
-subway
-pizza hut
-wendy's
-tim hortons
-l'oréal
-estée lauder
-gucci
 nike
-adidas
-puma
-louis vuitton
-chanel
-h&m
-zara
-forever 21
-uniqlo
-gap
-old navy
-american eagle outfitters
-abercrombie & fitch
-hollister co.
-victoria's secret
-ralph lauren corporation
-tommy hilfiger
-calvin klein
-burberry
-versace
-prada
-coach
-dior
-ray-ban
-oakley
-orange
-meesho
-flipkart

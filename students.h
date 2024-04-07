@@ -23,7 +23,6 @@ private:
     std::string Email;
     std::string Program;
     std::string ContactNumber;
-    std::string WhatsappNumber;
     std::string AlternateNumber;
     std::string SkypeID;
 
@@ -35,11 +34,9 @@ public:
 
     //Constructor
         Student(const std::string& studentID, const std::string& fullName, const std::string& email,
-            const std::string& program, const std::string& contactNumber, const std::string& whatsappNumber,
-            const std::string& alternateNumber, const std::string& skypeID)
+            const std::string& program, const std::string& contactNumber, const std::string& alternateNumber, const std::string& skypeID)
         : Student_ID(fD(studentID)), FullName(fD(fullName)), Email(fD(email)), Program(fD(program)),
-          ContactNumber(fD(contactNumber)), WhatsappNumber(fD(whatsappNumber)),
-          AlternateNumber(fD(alternateNumber)), SkypeID(fD(skypeID)) {
+          ContactNumber(fD(contactNumber)), AlternateNumber(fD(alternateNumber)), SkypeID(fD(skypeID)) {
 
             std::ofstream studentid(ColumnPath+"Student_ID.txt", std::ios::app);
             if (studentid.is_open()){
@@ -71,12 +68,6 @@ public:
                 contactnumber.close();
             }
 
-            std::ofstream whatsappnumber(ColumnPath+"WhatsappNumber.txt", std::ios::app);
-            if (whatsappnumber.is_open()){
-                whatsappnumber << WhatsappNumber << std::endl;
-                whatsappnumber.close();
-            }
-
             std::ofstream alternatenumber(ColumnPath+"AlternateNumber.txt", std::ios::app);
             if (alternatenumber.is_open()){
                 alternatenumber << AlternateNumber << std::endl;
@@ -88,15 +79,7 @@ public:
                 skypeid << SkypeID << std::endl;
                 skypeid.close();
             }
-    }
-
-    //Public Student Methods
-
-    // std::string getStudentID() const{
-    //     return Student_ID;
-    // }
-
-    
+    }   
 
 };
 

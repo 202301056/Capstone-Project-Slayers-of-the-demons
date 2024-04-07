@@ -20,14 +20,14 @@ class Interview{
     std::string TimeOfInterview;   //(hh:mm)
     std::string Venue;
     std::string Status;  //Complete-Incomplete
-    std::string Hired;   //Yes-No
-    std::string Package;  //Package obtain if Hired
+    std::string PackageOffered;  //Package obtain if Hired
+    std::string OfferAccepted;   //Yes-No
 
     std::string ColumnPath = "Database/PlacementManager/Interview/";
 
     public:
-    Interview(const std::string& interviewingcompany, const std::string& interviewee, const std::string& date, const std::string& time, const std::string& venue, const std::string& status = "i", const std::string& hired = "n", const std::string& package="0")
-        :InterviewingCompany(fD(interviewingcompany)), Interviewee(fD(interviewee)), DateOfInterview(fD(date)), TimeOfInterview(fD(time)), Venue(fD(venue)), Status(fD(status)), Hired(fD(hired)), Package(fD(package)) 
+    Interview(const std::string& interviewingcompany, const std::string& interviewee, const std::string& date, const std::string& time, const std::string& venue, const std::string& status = "i", const std::string& package="0", const std::string& offeracceptedbystudent = "n")
+        :InterviewingCompany(fD(interviewingcompany)), Interviewee(fD(interviewee)), DateOfInterview(fD(date)), TimeOfInterview(fD(time)), Venue(fD(venue)), Status(fD(status)), PackageOffered(fD(package)), OfferAccepted(fD(offeracceptedbystudent)) 
         {
 
             std::ofstream nameofinterviewingcompany;
@@ -72,18 +72,16 @@ class Interview{
                 statusoftheinterview.close();
             }
             
-            std::ofstream candidatehiredOrnot;
-            candidatehiredOrnot.open(ColumnPath+"Hired.txt", std::ios::app);
-            if (candidatehiredOrnot.is_open()){
-                candidatehiredOrnot << Hired << std::endl;
-                candidatehiredOrnot.close();
+            std::ofstream packagereceivedifHired(ColumnPath+"PackageOffered.txt", std::ios::app);
+            if (packagereceivedifHired.is_open()){
+                packagereceivedifHired << PackageOffered << std::endl;
+                packagereceivedifHired.close();
             }
 
-            std::ofstream packagereceivedifHired;
-            packagereceivedifHired.open(ColumnPath+"Package.txt", std::ios::app);
-            if (packagereceivedifHired.is_open()){
-                packagereceivedifHired << Package << std::endl;
-                packagereceivedifHired.close();
+            std::ofstream candidatehiredOrnot(ColumnPath+"OfferAccepted.txt", std::ios::app);
+            if (candidatehiredOrnot.is_open()){
+                candidatehiredOrnot << OfferAccepted << std::endl;
+                candidatehiredOrnot.close();
             }
 
     }
