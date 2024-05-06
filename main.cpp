@@ -160,6 +160,7 @@ void changeDataAtIndex(const std::string& filename, int index, const std::string
 //Company functions
 void addNewCompany() {
     std::string companyName, companyEmail, companyContact;
+    std::cin.ignore();
     std::cout << "Enter company name: ";
     std::getline(std::cin, companyName);
     std::cout << "Enter company email: ";
@@ -186,6 +187,7 @@ void deleteCompany(const std::string& companyName){
 //Student functions
 void addNewStudent() {
     std::string studentID, fullName, email, program, contactNumber, alternateNumber, skypeID;
+    std::cin.ignore();
     std::cout << "Enter student ID: ";
     std::getline(std::cin, studentID);
     std::cout << "Enter Fullname (Format: firstname lastname): ";
@@ -331,6 +333,7 @@ int main(){
 void scheduleAnInterview() {
 
     std::string companyName, intervieweeID, interviewDate, interviewTime, venue, status, packageoffered, offeraccepted;
+    std::cin.ignore();
     std::cout << "Enter Interviewing Company Name: ";
     std::getline(std::cin, companyName);
     std::cout << "Enter Interviewee Student ID: ";
